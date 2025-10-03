@@ -26,14 +26,15 @@ private:
 	SDL_Texture* textureSheet;
 	SDL_Surface* sourceSurface;
 	std::unordered_map<std::string, SDL_Texture*> textureCache;
-	SDL_Texture* getCroppedTexture(int x, int y, int width, int height);
 public:
 	SpriteSheetSDL(const char* path, SDL_Renderer* renderer);
 	~SpriteSheetSDL();
 	SDL_Texture* getTexture(const std::string& textureName);
+	SDL_Texture* getCroppedTexture(int x, int y, int width, int height);
 	std::pair<SDL_Texture*, SDL_Texture*> getTexturePair(std::pair<std::string, std::string> IDs);
 	void prepareTexture(const std::string textureName, int x, int y, int width, int height);
 	void prepareTexturePair(std::pair<std::string, std::string> IDs, int x, int y, std::pair<int, int> size);
+
 };
 }
 #endif
