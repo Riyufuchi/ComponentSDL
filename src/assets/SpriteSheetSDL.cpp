@@ -2,7 +2,7 @@
 // File       : SpriteSheetSDL.cpp
 // Author     : riyufuchi
 // Created on : Feb 22, 2025
-// Last edit  : Feb 32, 2025
+// Last edit  : Nov 10, 2025
 // Copyright  : Copyright (c) 2025, riyufuchi
 // Description: ConsoleArt
 //==============================================================================
@@ -11,13 +11,14 @@
 
 namespace sdl
 {
-SpriteSheetSDL::SpriteSheetSDL(const char* path, SDL_Renderer* renderer)
+SpriteSheetSDL::SpriteSheetSDL(const char* path, SDL_Renderer* renderer) : ready(true)
 {
 	this->renderer = renderer;
 
 	if (!renderer)
 	{
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Null pointer to renderer!");
+		ready = false;
 		return;
 	}
 
@@ -25,6 +26,7 @@ SpriteSheetSDL::SpriteSheetSDL(const char* path, SDL_Renderer* renderer)
 	if (!spriteSheet)
 	{
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to load image: %s", IMG_GetError());
+		ready = false;
 		return;
 	}
 
@@ -32,6 +34,7 @@ SpriteSheetSDL::SpriteSheetSDL(const char* path, SDL_Renderer* renderer)
 	if (!textureSheet)
 	{
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to create texture from surface: %s", SDL_GetError());
+		ready = false;
 		return;
 	}
 	this->sourceSurface = nullptr;
@@ -127,4 +130,10 @@ void SpriteSheetSDL::prepareTexturePair(std::pair<std::string, std::string> IDs,
 	prepareTexture(IDs.first, x, y, size.first, size.second);
 	prepareTexture(IDs.second, x + size.first, y, size.first, size.second);
 }
+
+bool SpriteSheetSDL::isReady() const
+{
+	return ready;
+}
+
 }
