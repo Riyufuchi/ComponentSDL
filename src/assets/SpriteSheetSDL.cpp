@@ -2,7 +2,7 @@
 // File       : SpriteSheetSDL.cpp
 // Author     : riyufuchi
 // Created on : Feb 22, 2025
-// Last edit  : Nov 10, 2025
+// Last edit  : Nov 17, 2025
 // Copyright  : Copyright (c) 2025, riyufuchi
 // Description: ConsoleArt
 //==============================================================================
@@ -23,6 +23,37 @@ SpriteSheetSDL::SpriteSheetSDL(const char* path, SDL_Renderer* renderer) : ready
 	}
 
 	spriteSheet = IMG_Load(path);
+	if (!spriteSheet)
+	{
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to load image: %s", IMG_GetError());
+		ready = false;
+		return;
+	}
+
+	textureSheet = SDL_CreateTextureFromSurface(renderer, spriteSheet);
+	if (!textureSheet)
+	{
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to create texture from surface: %s", SDL_GetError());
+		ready = false;
+		return;
+	}
+	this->sourceSurface = nullptr;
+}
+
+SpriteSheetSDL::SpriteSheetSDL(unsigned int len, unsigned char* imgdata, SDL_Renderer* renderer)
+{
+	this->renderer = renderer;
+
+	if (!renderer)
+	{
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Null pointer to renderer!");
+		ready = false;
+		return;
+	}
+
+	SDL_RWops* rw = SDL_RWFromConstMem(imgdata, len);
+
+	spriteSheet = IMG_Load_RW(rw, 1);
 	if (!spriteSheet)
 	{
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to load image: %s", IMG_GetError());

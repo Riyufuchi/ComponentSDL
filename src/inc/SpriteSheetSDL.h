@@ -2,7 +2,7 @@
 // File       : SpriteSheetSDL.h
 // Author     : riyufuchi
 // Created on : Feb 18, 2025
-// Last edit  : Nov 10, 2025
+// Last edit  : Nov 17, 2025
 // Copyright  : Copyright (c) 2025, riyufuchi
 // Description:
 //==============================================================================
@@ -29,6 +29,7 @@ private:
 	std::unordered_map<std::string, SDL_Texture*> textureCache;
 public:
 	SpriteSheetSDL(const char* path, SDL_Renderer* renderer);
+	SpriteSheetSDL(unsigned int len, unsigned char* imgdata, SDL_Renderer* renderer);
 	~SpriteSheetSDL();
 	SDL_Texture* getTexture(const std::string& textureName);
 	SDL_Texture* getCroppedTexture(int x, int y, int width, int height);
