@@ -28,6 +28,6 @@ ImageButtonSDL::~ImageButtonSDL()
 }
 void ImageButtonSDL::draw(SDL_Renderer* renderer)
 {
-	SDL_RenderTexture(renderer, (mouseOver ? textureHover : texture), nullptr, &rect);
+	SDL_RenderCopy(renderer, (mouseOver ? textureHover : texture), nullptr, &rect);
 }
 } /* namespace ConsoleArt */

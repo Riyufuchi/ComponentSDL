@@ -9,74 +9,143 @@
 
 #include "../inc/SpriteSheetSDL.h"
 
+#define STB_IMAGE_IMPLEMENTATION
+#include "../inc/external/stb_image.h"
+
+
 namespace sdl
 {
-SpriteSheetSDL::SpriteSheetSDL(const char* path, SDL_Renderer* renderer) : ready(true)
+SpriteSheetSDL::SpriteSheetSDL(const char* path, SDL_Renderer* renderer) : renderer(renderer), ready(true), spriteSheet(nullptr), textureSheet(nullptr), sourceSurface(nullptr)
 {
-	this->renderer = renderer;
-
 	if (!renderer)
 	{
-		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Null pointer to renderer!");
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Null renderer!");
 		ready = false;
 		return;
 	}
 
-	spriteSheet = IMG_Load(path);
+	int w, h, channels;
+	unsigned char* pixels = stbi_load(path, &w, &h, &channels, 4);
+	if (!pixels)
+	{
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed load stb: %s",
+				stbi_failure_reason());
+		ready = false;
+		return;
+	}
+
+	// Create SDL surface (this COPIES pixels into SDL-owned memory)
+	spriteSheet = SDL_CreateRGBSurfaceWithFormatFrom(pixels, // raw pixel data (temporary)
+			w, h, 32,                 // depth
+			w * 4,              // pitch
+			SDL_PIXELFORMAT_RGBA32);
+
+	// SDL_CreateRGBSurfaceWithFormatFrom DOES NOT copy pixel memory.
+	// So we now need to allocate SDL-owned memory and copy into it.
+
 	if (!spriteSheet)
 	{
-		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to load image: %s", SDL_GetError());
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed create surface: %s",
+				SDL_GetError());
+		stbi_image_free(pixels);
 		ready = false;
 		return;
 	}
 
-	textureSheet = SDL_CreateTextureFromSurface(renderer, spriteSheet);
-	if (!textureSheet)
+	// Allocate SDL-owned surface memory that does copy
+	SDL_Surface* finalSurface = SDL_ConvertSurfaceFormat(spriteSheet,
+			SDL_PIXELFORMAT_RGBA32, 0);
+	SDL_FreeSurface(spriteSheet);      // free wrapper surface
+	spriteSheet = finalSurface;        // use real surface
+
+	stbi_image_free(pixels);           // raw stb buffer no longer needed
+
+	if (!spriteSheet)
 	{
-		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to create texture from surface: %s", SDL_GetError());
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
+				"Surface format convert failed: %s", SDL_GetError());
 		ready = false;
 		return;
 	}
-	this->sourceSurface = nullptr;
+
+	// Optional: full texture version for drawing whole image
+	textureSheet = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA32,
+			SDL_TEXTUREACCESS_STATIC, w, h);
+	if (textureSheet)
+	{
+		SDL_UpdateTexture(textureSheet, nullptr, spriteSheet->pixels,
+				spriteSheet->pitch);
+	}
 }
 
-SpriteSheetSDL::SpriteSheetSDL(unsigned int len, unsigned char* imgdata, SDL_Renderer* renderer)
+SpriteSheetSDL::SpriteSheetSDL(unsigned int len, unsigned char* imgdata, SDL_Renderer* renderer) : renderer(renderer), ready(true), spriteSheet(nullptr), textureSheet(nullptr), sourceSurface(nullptr)
 {
-	this->renderer = renderer;
-
 	if (!renderer)
 	{
-		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Null pointer to renderer!");
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Null renderer!");
 		ready = false;
 		return;
 	}
 
-	SDL_IOStream* io = SDL_IOFromConstMem(imgdata, len);
+	int w, h, channels;
+	unsigned char* pixels = stbi_load_from_memory(imgdata, len, &w, &h,
+			&channels, 4);
+	if (!pixels)
+	{
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
+				"stb failed load from memory: %s", stbi_failure_reason());
+		ready = false;
+		return;
+	}
 
-	spriteSheet = IMG_Load_IO(io, 1);
+	// Wrap stb pixels into a temporary SDL surface (NO COPY!)
+	SDL_Surface* tempSurface = SDL_CreateRGBSurfaceWithFormatFrom(pixels, // raw pixel buffer
+			w, h, 32,                 // depth
+			w * 4,              // pitch
+			SDL_PIXELFORMAT_RGBA32);
+
+	if (!tempSurface)
+	{
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to wrap surface: %s",
+				SDL_GetError());
+		stbi_image_free(pixels);
+		ready = false;
+		return;
+	}
+
+	// Convert -> SDL now allocates and owns its own pixel memory (COPY happens here)
+	spriteSheet = SDL_ConvertSurfaceFormat(tempSurface, SDL_PIXELFORMAT_RGBA32,
+			0);
+
+	SDL_FreeSurface(tempSurface);  // free wrapper surface
+	stbi_image_free(pixels);       // free stb pixel buffer
+
 	if (!spriteSheet)
 	{
-		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to load image: %s", SDL_GetError());
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Surface convert failed: %s",
+				SDL_GetError());
 		ready = false;
 		return;
 	}
 
-	textureSheet = SDL_CreateTextureFromSurface(renderer, spriteSheet);
-	if (!textureSheet)
+	// Optional: full texture version, useful for drawing the whole sheet
+	textureSheet = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA32,
+			SDL_TEXTUREACCESS_STATIC, w, h);
+
+	if (textureSheet)
 	{
-		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to create texture from surface: %s", SDL_GetError());
-		ready = false;
-		return;
+		SDL_UpdateTexture(textureSheet, nullptr, spriteSheet->pixels,
+				spriteSheet->pitch);
 	}
-	this->sourceSurface = nullptr;
 }
+
 
 SpriteSheetSDL::~SpriteSheetSDL()
 {
 	if (textureSheet)
 		SDL_DestroyTexture(textureSheet);
 	if (spriteSheet)
-		SDL_DestroySurface(spriteSheet);
+		SDL_FreeSurface(spriteSheet);
 }
 
 SDL_Texture* SpriteSheetSDL::getCroppedTexture(int x, int y, int width, int height)
@@ -93,64 +162,48 @@ SDL_Texture* SpriteSheetSDL::getCroppedTexture(int x, int y, int width, int heig
 		return nullptr;
 	}
 
-	// Convert format if needed
-	if (sourceSurface->format != SDL_PIXELFORMAT_RGBA32)
+	// Convert surface only if necessary
+	sourceSurface = spriteSheet;
+	if (spriteSheet->format->format != SDL_PIXELFORMAT_RGBA32)
 	{
-		SDL_Surface* converted = SDL_ConvertSurface(spriteSheet, SDL_PIXELFORMAT_RGBA32);
-		if (!converted)
-		{
-			SDL_Log("ERROR: Failed to convert surface: %s", SDL_GetError());
+		sourceSurface = SDL_ConvertSurfaceFormat(spriteSheet,
+				SDL_PIXELFORMAT_RGBA32, 0);
+		if (!sourceSurface) {
+			SDL_Log("ERROR: Failed to convert surface format: %s",
+					SDL_GetError());
 			return nullptr;
 		}
-		sourceSurface = converted;
 	}
 
-	// Allocate pixel buffer for cropped surface (SDL3 needs this!)
-	int bytes_per_pixel = SDL_BYTESPERPIXEL(SDL_PIXELFORMAT_RGBA32);
-	int pitch = width * bytes_per_pixel;
-
-	void* pixels = SDL_malloc(height * pitch);
-	if (!pixels)
-	{
-		SDL_Log("ERROR: Out of memory");
-		if (sourceSurface != spriteSheet)
-			SDL_DestroySurface(sourceSurface);
-		return nullptr;
-	}
-
-	// Create surface wrapping this pixel buffer
-	SDL_Surface* croppedSurface = SDL_CreateSurfaceFrom(width, height, SDL_PIXELFORMAT_RGBA32, pixels, pitch);
-
+	// Create the cropped surface
+	SDL_Surface* croppedSurface = SDL_CreateRGBSurfaceWithFormat(0, width, height, 32, SDL_PIXELFORMAT_RGBA32);
 	if (!croppedSurface)
 	{
-		SDL_free(pixels);
+		SDL_Log("ERROR: Failed to create cropped surface: %s", SDL_GetError());
 		if (sourceSurface != spriteSheet)
-			SDL_DestroySurface(sourceSurface);
+			SDL_FreeSurface(sourceSurface);
 		return nullptr;
 	}
 
-	// Now blit the desired region
 	SDL_Rect srcRect = { x, y, width, height };
-	SDL_Rect dstRect = { 0, 0, width, height };
+	SDL_BlitSurface(sourceSurface, &srcRect, croppedSurface, nullptr);
 
-	if (SDL_BlitSurface(sourceSurface, &srcRect, croppedSurface, &dstRect))
-	{
-		SDL_Log("ERROR: Blit failed: %s", SDL_GetError());
-		SDL_DestroySurface(croppedSurface);
-		if (sourceSurface != spriteSheet)
-			SDL_DestroySurface(sourceSurface);
-		return nullptr;
-	}
+	// Convert cropped surface to texture
+	SDL_Texture* croppedTexture = SDL_CreateTextureFromSurface(renderer, croppedSurface);
 
-	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, croppedSurface);
-	if (!texture)
+	// Free only if we created a new surface for conversion
+	if (sourceSurface != spriteSheet)
+		SDL_FreeSurface(sourceSurface);
+
+	SDL_FreeSurface(croppedSurface);
+
+	if (!croppedTexture)
 	{
 		SDL_Log("ERROR: Failed to create texture: %s", SDL_GetError());
-		SDL_DestroySurface(croppedSurface);
 		return nullptr;
 	}
 
-	return texture;
+	return croppedTexture;
 }
 
 SDL_Texture* SpriteSheetSDL::getTexture(const std::string& textureName)

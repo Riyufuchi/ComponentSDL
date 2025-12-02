@@ -23,24 +23,15 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 # SDL3
 set(SDL_LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/libs/SDL)
 
-add_library(SDL3 STATIC IMPORTED)
-add_library(SDL3_image STATIC IMPORTED)
+add_library(SDL2 STATIC IMPORTED)
 
 if (WIN32)
-	set_target_properties(SDL3 PROPERTIES
-	IMPORTED_LOCATION ${SDL_LIB_DIR}/windows/x64/SDL3.lib
-	INTERFACE_INCLUDE_DIRECTORIES ${SDL_LIB_DIR})
-	
-	set_target_properties(SDL3_image PROPERTIES
-	IMPORTED_LOCATION ${SDL_LIB_DIR}/windows/x64/SDL3_image.lib
+	set_target_properties(SDL2 PROPERTIES
+	IMPORTED_LOCATION ${SDL_LIB_DIR}/windows/x64/SDL2.lib
 	INTERFACE_INCLUDE_DIRECTORIES ${SDL_LIB_DIR})
 else()
-	set_target_properties(SDL3 PROPERTIES
-	IMPORTED_LOCATION ${SDL_LIB_DIR}/linux/libSDL3.a
-	INTERFACE_INCLUDE_DIRECTORIES ${SDL_LIB_DIR})
-	
-	set_target_properties(SDL3_image PROPERTIES
-	IMPORTED_LOCATION ${SDL_LIB_DIR}/linux/libSDL3_image.a
+	set_target_properties(SDL2 PROPERTIES
+	IMPORTED_LOCATION ${SDL_LIB_DIR}/linux/libSDL2.a
 	INTERFACE_INCLUDE_DIRECTORIES ${SDL_LIB_DIR})
 endif()
 
@@ -57,6 +48,5 @@ add_library(ComponentSDL STATIC ${APP_SOURCES})
 
 # Link everything
 target_link_libraries(ComponentSDL PRIVATE
-	SDL3
-	SDL3_image
+	SDL2
 )

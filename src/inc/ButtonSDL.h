@@ -10,7 +10,7 @@
 #ifndef CONSOLEART_GUI_UTILS_BUTTON_H_
 #define CONSOLEART_GUI_UTILS_BUTTON_H_
 
-#include "SDL3/SDL.h"
+#include "SDL2/SDL.h"
 
 #include "ComponentSDL.h"
 

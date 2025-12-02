@@ -10,7 +10,7 @@
 #ifndef CONSOLEART_SDL_ABSTRACT_STATESDL_H_
 #define CONSOLEART_SDL_ABSTRACT_STATESDL_H_
 
-#include "SDL3/SDL.h"
+#include "SDL2/SDL.h"
 
 namespace sdl
 {
@@ -18,8 +18,8 @@ struct WindowInfo
 {
 	int w;
 	int h;
-	float mouseX;
-	float mouseY;
+	int mouseX;
+	int mouseY;
 	bool keepRunning;
 	SDL_Window* window;
 	SDL_Renderer* renderer;

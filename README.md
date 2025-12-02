@@ -13,8 +13,8 @@ Tools to make easy and simple GUI for SDL2 in C++.
 
 | Name | Used for | Included in this repository |
 | :------: | :----------: | :---: |
-| [SDL3](https://www.libsdl.org/) | GUI | ✅ |
-| [SDL3_image](https://www.libsdl.org/) | Images | ✅ |
+| [SDL2](https://www.libsdl.org/) | GUI | ✅ |
+| [stb_image](https://github.com/nothings/stb) | Images | ✅ |
 | [stb_truerype](https://github.com/nothings/stb) | Fonts | ✅ |
 
 ## Compilation

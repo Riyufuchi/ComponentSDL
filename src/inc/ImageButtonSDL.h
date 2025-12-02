@@ -10,10 +10,9 @@
 #ifndef CONSOLEART_GUI_UTILS_IMAGE_BUTTON_H_
 #define CONSOLEART_GUI_UTILS_IMAGE_BUTTON_H_
 
-#include <SDL3/SDL.h>
-#include <SDL3/SDL_image.h>
 #include <utility>
 
+#include "SDL2/SDL.h"
 #include "ComponentSDL.h"
 
 namespace sdl

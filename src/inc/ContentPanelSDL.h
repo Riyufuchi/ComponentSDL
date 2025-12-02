@@ -31,7 +31,7 @@ public:
 	void tickOnClick();
 	void addComponent(int y, ComponentSDL* component);
 	void reposeContent();
-	void checkHoverOverContent(float& x, float& y);
+	void checkHoverOverContent(int& x, int& y);
 	void clear();
 };
 } /* namespace ConsoleArt */

@@ -32,7 +32,7 @@ StringButtonSDL::~StringButtonSDL()
 
 void StringButtonSDL::draw(SDL_Renderer *renderer)
 {
-	SDL_RenderTexture(renderer, isMouseOver() ? textHover : text->getTexture(), nullptr, &rect);
+	SDL_RenderCopy(renderer, isMouseOver() ? textHover : text->getTexture(), nullptr, &rect);
 }
 
 } /* namespace sdl */

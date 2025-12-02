@@ -26,12 +26,12 @@ LabelSDL::~LabelSDL()
 
 void LabelSDL::draw(SDL_Renderer *renderer)
 {
-	SDL_RenderTexture(renderer, textTexture, nullptr, &rect);
+	SDL_RenderCopy(renderer, textTexture, nullptr, &rect);
 }
 
 void LabelSDL::draw()
 {
-	SDL_RenderTexture(renderer, textTexture, nullptr, &rect);
+	SDL_RenderCopy(renderer, textTexture, nullptr, &rect);
 }
 
 void LabelSDL::setText(std::string text)
@@ -41,14 +41,14 @@ void LabelSDL::setText(std::string text)
 
 void LabelSDL::setText(std::string text, SDL_Color color)
 {
-	static float w, h;
 	if (textStringSDL)
 		delete textStringSDL;
 	textStringSDL = new TextSDL(renderer, fontname, text, size, color);
-	textTexture = textStringSDL->getTexture();
-	SDL_GetTextureSize(textTexture, &w, &h);
-	rect.w = w;
-	rect.w = h;
+	SDL_Texture* t = textStringSDL->getTexture();
+	if (!t)
+		return;
+	textTexture = t;
+	SDL_QueryTexture(t, nullptr, nullptr, &rect.w, &rect.h);
 }
 
 } /* namespace ConsoleArt */

@@ -18,8 +18,8 @@
 #include <fstream>
 
 
-#include "SDL3/SDL.h"
-#include "../external/stb_truetype.h"
+#include "SDL2/SDL.h"
+#include "external/stb_truetype.h"
 
 namespace sdl
 {

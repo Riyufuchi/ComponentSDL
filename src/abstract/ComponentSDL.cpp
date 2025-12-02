@@ -12,11 +12,11 @@
 namespace sdl
 {
 
-ComponentSDL::ComponentSDL(float x, float y, float width, float height, std::function<void()> onClickEvent) : ComponentSDL(x, y, width, height, {128, 128, 128, 255}, onClickEvent)
+ComponentSDL::ComponentSDL(int x, int y, int width, int height, std::function<void()> onClickEvent) : ComponentSDL(x, y, width, height, {128, 128, 128, 255}, onClickEvent)
 {
 }
 
-ComponentSDL::ComponentSDL(float x, float y, float width, float height, SDL_Color baseColor, std::function<void()>  onClickEvent) : mouseOver(false),baseColor(baseColor), rect({x, y, width, height}), onClickEvent(onClickEvent)
+ComponentSDL::ComponentSDL(int x, int y, int width, int height, SDL_Color baseColor, std::function<void()>  onClickEvent) : mouseOver(false),baseColor(baseColor), rect({x, y, width, height}), onClickEvent(onClickEvent)
 {
 }
 
@@ -24,21 +24,21 @@ ComponentSDL::~ComponentSDL()
 {
 }
 
-void ComponentSDL::repose(float x, float y)
+void ComponentSDL::repose(int x, int y)
 {
 	rect.x = x;
 	rect.y = y;
 }
 
-void ComponentSDL::center(float width, float height)
+void ComponentSDL::center(int width, int height)
 {
-	rect.x = std::max(0.0f, (width - rect.w) / 2);
-	rect.y = std::max(0.0f, (height - rect.h) / 2);
+	rect.x = std::max(0, (width - rect.w) / 2);
+	rect.y = std::max(0, (height - rect.h) / 2);
 }
 
-void ComponentSDL::centerHorizontal(float width)
+void ComponentSDL::centerHorizontal(int width)
 {
-	rect.x = std::max(0.0f, (width - rect.w) / 2);
+	rect.x = std::max(0, (width - rect.w) / 2);
 }
 
 void ComponentSDL::onClick()
@@ -47,27 +47,27 @@ void ComponentSDL::onClick()
 		onClickEvent();
 }
 
-bool ComponentSDL::isMouseInside(float mouseX, float mouseY) const
+bool ComponentSDL::isMouseInside(int mouseX, int mouseY) const
 {
 	return (mouseX >= rect.x && mouseX <= rect.x + rect.w && mouseY >= rect.y && mouseY <= rect.y + rect.h);
 }
 
-void ComponentSDL::setX(float x)
+void ComponentSDL::setX(int x)
 {
 	this->rect.x = x;
 }
 
-void ComponentSDL::setY(float y)
+void ComponentSDL::setY(int y)
 {
 	this->rect.y = y;
 }
 
-void ComponentSDL::setWidth(float width)
+void ComponentSDL::setWidth(int width)
 {
 	this->rect.w = width;
 }
 
-void ComponentSDL::setHeight(float height)
+void ComponentSDL::setHeight(int height)
 {
 	this->rect.h = height;
 }
@@ -77,22 +77,22 @@ void ComponentSDL::setMouseOver(bool mouseOver)
 	this->mouseOver = mouseOver;
 }
 
-float ComponentSDL::getX() const
+int ComponentSDL::getX() const
 {
 	return this->rect.x;
 }
 
-float ComponentSDL::getY() const
+int ComponentSDL::getY() const
 {
 	return this->rect.y;
 }
 
-float ComponentSDL::getWidth() const
+int ComponentSDL::getWidth() const
 {
 	return this->rect.w;
 }
 
-float ComponentSDL::getHeight() const
+int ComponentSDL::getHeight() const
 {
 	return this->rect.h;
 }

@@ -55,7 +55,7 @@ void ContentPanelSDL::draw(SDL_Renderer* renderer)
 			component->draw(renderer);
 }
 
-void ContentPanelSDL::checkHoverOverContent(float& x, float& y)
+void ContentPanelSDL::checkHoverOverContent(int& x, int& y)
 {
 	for (size_t yc = 0; yc < componentsAtY.size(); yc++)
 	{

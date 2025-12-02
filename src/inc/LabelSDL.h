@@ -12,7 +12,7 @@
 
 #include <string>
 
-#include "SDL3/SDL.h"
+#include "SDL2/SDL.h"
 
 #include "ComponentSDL.h"
 #include "TextSDL.h"
