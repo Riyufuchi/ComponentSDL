@@ -1,3 +1,4 @@
 # Ignore 3rd party libs that are included in the repo
 libs/* linguist-vendored
+libs/ linguist-vendored
 
