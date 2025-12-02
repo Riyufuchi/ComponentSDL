@@ -13,11 +13,9 @@
 #include <string>
 
 #include "SDL3/SDL.h"
-#include "SDL3/SDL_ttf.h"
 
 #include "ComponentSDL.h"
-#include "FontManagerSDL.h"
-#include "StringSDL.h"
+#include "TextSDL.h"
 
 namespace sdl
 {
@@ -25,17 +23,17 @@ class LabelSDL : public ComponentSDL
 {
 private:
 	SDL_Renderer* renderer;
-	TTF_Font* font;
 	SDL_Texture* textTexture;
-	StringSDL* textStringSDL;
+	TextSDL* textStringSDL;
+	int size;
+	std::string fontname;
 public:
-	LabelSDL(std::string text, std::string fontname, int size, SDL_Color color, SDL_Renderer* renderer);
+	LabelSDL(std::string text, const std::string& fontname, int size, SDL_Color color, SDL_Renderer* renderer);
 	virtual ~LabelSDL();
 	virtual void draw(SDL_Renderer *renderer) override;
 	void draw();
 	void setText(std::string text);
 	void setText(std::string text, SDL_Color color);
-	TTF_Font* getFont();
 
 };
 

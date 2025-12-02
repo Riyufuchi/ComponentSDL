@@ -11,10 +11,10 @@
 
 namespace sdl
 {
-LabelSDL::LabelSDL(std::string text, std::string fontname, int size, SDL_Color color, SDL_Renderer* renderer) : ComponentSDL(0, 0, 0, 0, color), renderer(renderer), font(nullptr), textTexture(nullptr)
+LabelSDL::LabelSDL(std::string text, const std::string& fontname, int size, SDL_Color color, SDL_Renderer* renderer) : ComponentSDL(0, 0, 0, 0, color),
+	renderer(renderer), textTexture(nullptr), size(size)
 {
-	font = FontManagerSDL::getInstance().getFont(fontname, size);
-
+	this->fontname = fontname;
 	setText(text, color); // Initialize text texture
 }
 
@@ -41,18 +41,14 @@ void LabelSDL::setText(std::string text)
 
 void LabelSDL::setText(std::string text, SDL_Color color)
 {
+	static float w, h;
 	if (textStringSDL)
 		delete textStringSDL;
-	textStringSDL = new StringSDL(text, font, color, renderer);
+	textStringSDL = new TextSDL(renderer, fontname, text, size, color);
 	textTexture = textStringSDL->getTexture();
-	static float w, h;
 	SDL_GetTextureSize(textTexture, &w, &h);
 	rect.w = w;
 	rect.w = h;
 }
 
-TTF_Font* LabelSDL::getFont()
-{
-	return font;
-}
 } /* namespace ConsoleArt */

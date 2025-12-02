@@ -11,18 +11,18 @@
 #define SDL_COMPONENTS_STRINGBUTTONSDL_H_
 
 #include "ComponentSDL.h"
-#include "StringSDL.h"
+#include "TextSDL.h"
 
 namespace sdl
 {
 class StringButtonSDL : public ComponentSDL
 {
 private:
-	StringSDL* text;
-	StringSDL* textHover;
+	TextSDL* text;
+	SDL_Texture* textHover;
 public:
-	StringButtonSDL(StringSDL* text, SDL_Color hoverColor, std::function<void()> callback = nullptr);
-	StringButtonSDL(int x, int y, StringSDL* text, SDL_Color hoverColor, std::function<void()> callback = nullptr);
+	StringButtonSDL(TextSDL* text, SDL_Color hoverColor, std::function<void()> callback = nullptr);
+	StringButtonSDL(int x, int y, TextSDL* text, SDL_Color hoverColor, std::function<void()> callback = nullptr);
 	virtual ~StringButtonSDL();
 	virtual void draw(SDL_Renderer *renderer) override;
 };

@@ -25,7 +25,6 @@ set(SDL_LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/libs/SDL)
 
 add_library(SDL3 STATIC IMPORTED)
 add_library(SDL3_image STATIC IMPORTED)
-add_library(SDL3_ttf STATIC IMPORTED)
 
 if (WIN32)
 	set_target_properties(SDL3 PROPERTIES
@@ -35,10 +34,6 @@ if (WIN32)
 	set_target_properties(SDL3_image PROPERTIES
 	IMPORTED_LOCATION ${SDL_LIB_DIR}/windows/x64/SDL3_image.lib
 	INTERFACE_INCLUDE_DIRECTORIES ${SDL_LIB_DIR})
-	
-	set_target_properties(SDL3_ttf PROPERTIES
-	IMPORTED_LOCATION ${SDL_LIB_DIR}/windows/x64/SDL3_ttf.lib
-	INTERFACE_INCLUDE_DIRECTORIES ${SDL_LIB_DIR})
 else()
 	set_target_properties(SDL3 PROPERTIES
 	IMPORTED_LOCATION ${SDL_LIB_DIR}/linux/libSDL3.a
@@ -46,10 +41,6 @@ else()
 	
 	set_target_properties(SDL3_image PROPERTIES
 	IMPORTED_LOCATION ${SDL_LIB_DIR}/linux/libSDL3_image.a
-	INTERFACE_INCLUDE_DIRECTORIES ${SDL_LIB_DIR})
-	
-	set_target_properties(SDL3_ttf PROPERTIES
-	IMPORTED_LOCATION ${SDL_LIB_DIR}/linux/libSDL3_ttf.a
 	INTERFACE_INCLUDE_DIRECTORIES ${SDL_LIB_DIR})
 endif()
 
@@ -68,5 +59,4 @@ add_library(ComponentSDL STATIC ${APP_SOURCES})
 target_link_libraries(ComponentSDL PRIVATE
 	SDL3
 	SDL3_image
-	SDL3_ttf
 )

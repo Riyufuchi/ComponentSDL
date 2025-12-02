@@ -18,8 +18,8 @@ struct WindowInfo
 {
 	int w;
 	int h;
-	int mouseX;
-	int mouseY;
+	float mouseX;
+	float mouseY;
 	bool keepRunning;
 	SDL_Window* window;
 	SDL_Renderer* renderer;
