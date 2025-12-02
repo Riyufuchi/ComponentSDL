@@ -2,7 +2,7 @@
 // File       : StringSDL.cpp
 // Author     : riyufuchi
 // Created on : Feb 25, 2025
-// Last edit  : Feb 25, 2025
+// Last edit  : Dec 02, 2025
 // Copyright  : Copyright (c) 2025, riyufuchi
 // Description: ConsoleArt
 //==============================================================================
@@ -20,59 +20,37 @@ LabelSDL::LabelSDL(std::string text, std::string fontname, int size, SDL_Color c
 
 LabelSDL::~LabelSDL()
 {
-	if (textTexture)
-		SDL_DestroyTexture(textTexture);
-}
-
-SDL_Texture* LabelSDL::prepareText(std::string& text, SDL_Color& color)
-{
-	if (textTexture)
-		SDL_DestroyTexture(textTexture);
-	SDL_Surface* textSurface = TTF_RenderUTF8_Blended(font, text.c_str(), color);
-	if (!textSurface)
-	{
-		SDL_Log("ERROR: Failed to create text surface: %s", TTF_GetError());
-		return nullptr;
-	}
-
-	SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
-	SDL_FreeSurface(textSurface);
-
-	if (!textTexture)
-	{
-		SDL_Log("ERROR: Failed to create texture from text: %s", SDL_GetError());
-	}
-
-	return textTexture;
+	if (textStringSDL)
+		delete textStringSDL;
 }
 
 void LabelSDL::draw(SDL_Renderer *renderer)
 {
-	SDL_RenderCopy(renderer, textTexture, nullptr, &rect);
+	SDL_RenderTexture(renderer, textTexture, nullptr, &rect);
 }
 
 void LabelSDL::draw()
 {
-	SDL_RenderCopy(renderer, textTexture, nullptr, &rect);
+	SDL_RenderTexture(renderer, textTexture, nullptr, &rect);
 }
 
 void LabelSDL::setText(std::string text)
 {
-	SDL_Texture* t = prepareText(text, baseColor);
-	if (!t)
-		return;
-	textTexture = t;
-	SDL_QueryTexture(t, nullptr, nullptr, &rect.w, &rect.h);
+	setText(text, baseColor);
 }
 
 void LabelSDL::setText(std::string text, SDL_Color color)
 {
-	SDL_Texture* t = prepareText(text, color);
-	if (!t)
-		return;
-	textTexture = t;
-	SDL_QueryTexture(t, nullptr, nullptr, &rect.w, &rect.h);
+	if (textStringSDL)
+		delete textStringSDL;
+	textStringSDL = new StringSDL(text, font, color, renderer);
+	textTexture = textStringSDL->getTexture();
+	static float w, h;
+	SDL_GetTextureSize(textTexture, &w, &h);
+	rect.w = w;
+	rect.w = h;
 }
+
 TTF_Font* LabelSDL::getFont()
 {
 	return font;

@@ -1,8 +1,8 @@
 //==============================================================================
 // File       : StringButtonSDL.cpp
 // Author     : riyufuchi
-// Created on : Mar 4, 2025
-// Last edit  : May 24, 2025
+// Created on : Mar 04, 2025
+// Last edit  : Dec 02, 2025
 // Copyright  : Copyright (c) 2025, riyufuchi
 // Description: ConsoleArt
 //==============================================================================
@@ -19,7 +19,7 @@ StringButtonSDL::StringButtonSDL(int x, int y, StringSDL* text, SDL_Color hoverC
 {
 	this->rect.w = text->getWidth();
 	this->rect.h = text->getHeight();
-	this->textHover = new sdl::StringSDL(text->getText(), text->getFont(), text->getSize(), hoverColor, text->getRenderer());
+	this->textHover = new sdl::StringSDL(text->getText(), text->getFont(), hoverColor, text->getRenderer());
 }
 
 StringButtonSDL::~StringButtonSDL()
@@ -30,7 +30,7 @@ StringButtonSDL::~StringButtonSDL()
 
 void StringButtonSDL::draw(SDL_Renderer *renderer)
 {
-	SDL_RenderCopy(renderer, isMouseOver() ? textHover->getTexture() : text->getTexture(), nullptr, &rect);
+	SDL_RenderTexture(renderer, isMouseOver() ? textHover->getTexture() : text->getTexture(), nullptr, &rect);
 }
 
 } /* namespace sdl */

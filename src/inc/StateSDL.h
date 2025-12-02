@@ -2,7 +2,7 @@
 // File       : StateSDL.h
 // Author     : riyufuchi
 // Created on : Feb 26, 2025
-// Last edit  : Mar 2, 2025
+// Last edit  : Dec 02, 2025
 // Copyright  : Copyright (c) 2025, riyufuchi
 // Description: ConsoleArt
 //==============================================================================
@@ -10,7 +10,7 @@
 #ifndef CONSOLEART_SDL_ABSTRACT_STATESDL_H_
 #define CONSOLEART_SDL_ABSTRACT_STATESDL_H_
 
-#include <SDL2/SDL.h>
+#include "SDL3/SDL.h"
 
 namespace sdl
 {

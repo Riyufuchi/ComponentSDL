@@ -20,36 +20,37 @@ endif()
 # Optimization
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
-# SDL2
+# SDL3
+set(SDL_LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/libs/SDL)
+
+add_library(SDL3 STATIC IMPORTED)
+add_library(SDL3_image STATIC IMPORTED)
+add_library(SDL3_ttf STATIC IMPORTED)
+
 if (WIN32)
-    #
-    # Windows: require SDL2_DIR, SDL2_image_DIR, SDL2_ttf_DIR
-    # (User must download SDL dev folders and point CMake to them)
-    #
-    find_package(SDL2 REQUIRED)
-    find_package(SDL2_image REQUIRED)
-    find_package(SDL2_ttf REQUIRED)
-
+	set_target_properties(SDL3 PROPERTIES
+	IMPORTED_LOCATION ${SDL_LIB_DIR}/windows/x64/SDL3.lib
+	INTERFACE_INCLUDE_DIRECTORIES ${SDL_LIB_DIR})
+	
+	set_target_properties(SDL3_image PROPERTIES
+	IMPORTED_LOCATION ${SDL_LIB_DIR}/windows/x64/SDL3_image.lib
+	INTERFACE_INCLUDE_DIRECTORIES ${SDL_LIB_DIR})
+	
+	set_target_properties(SDL3_ttf PROPERTIES
+	IMPORTED_LOCATION ${SDL_LIB_DIR}/windows/x64/SDL3_ttf.lib
+	INTERFACE_INCLUDE_DIRECTORIES ${SDL_LIB_DIR})
 else()
-    #
-    # Linux / macOS: prefer pkg-config
-    #
-    find_package(PkgConfig REQUIRED)
-
-    pkg_check_modules(SDL2 IMPORTED_TARGET sdl2)
-    pkg_check_modules(SDL2_IMAGE IMPORTED_TARGET SDL2_image)
-    pkg_check_modules(SDL2_TTF IMPORTED_TARGET SDL2_ttf)
-
-    # For compatibility the library names should be consistent
-    add_library(SDL2::SDL2 INTERFACE IMPORTED)
-    target_link_libraries(SDL2::SDL2 INTERFACE PkgConfig::SDL2)
-
-    add_library(SDL2_image::SDL2_image INTERFACE IMPORTED)
-    target_link_libraries(SDL2_image::SDL2_image INTERFACE PkgConfig::SDL2_IMAGE)
-
-    add_library(SDL2_ttf::SDL2_ttf INTERFACE IMPORTED)
-    target_link_libraries(SDL2_ttf::SDL2_ttf INTERFACE PkgConfig::SDL2_TTF)
-
+	set_target_properties(SDL3 PROPERTIES
+	IMPORTED_LOCATION ${SDL_LIB_DIR}/linux/libSDL3.a
+	INTERFACE_INCLUDE_DIRECTORIES ${SDL_LIB_DIR})
+	
+	set_target_properties(SDL3_image PROPERTIES
+	IMPORTED_LOCATION ${SDL_LIB_DIR}/linux/libSDL3_image.a
+	INTERFACE_INCLUDE_DIRECTORIES ${SDL_LIB_DIR})
+	
+	set_target_properties(SDL3_ttf PROPERTIES
+	IMPORTED_LOCATION ${SDL_LIB_DIR}/linux/libSDL3_ttf.a
+	INTERFACE_INCLUDE_DIRECTORIES ${SDL_LIB_DIR})
 endif()
 
 
@@ -65,7 +66,7 @@ add_library(ComponentSDL STATIC ${APP_SOURCES})
 
 # Link everything
 target_link_libraries(ComponentSDL PRIVATE
-    SDL2::SDL2
-    SDL2_image::SDL2_image
-    SDL2_ttf::SDL2_ttf
+	SDL3
+	SDL3_image
+	SDL3_ttf
 )

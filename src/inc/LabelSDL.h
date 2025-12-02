@@ -2,7 +2,7 @@
 // File       : StringSDL.h
 // Author     : riyufuchi
 // Created on : Feb 25, 2025
-// Last edit  : Feb 25, 2025
+// Last edit  : Dec 02, 2025
 // Copyright  : Copyright (c) 2025, riyufuchi
 // Description: ConsoleArt
 //==============================================================================
@@ -10,12 +10,14 @@
 #ifndef CONSOLEART_SDL_ASSETS_LABELSDL_H_
 #define CONSOLEART_SDL_ASSETS_LABELSDL_H_
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_ttf.h>
 #include <string>
+
+#include "SDL3/SDL.h"
+#include "SDL3/SDL_ttf.h"
 
 #include "ComponentSDL.h"
 #include "FontManagerSDL.h"
+#include "StringSDL.h"
 
 namespace sdl
 {
@@ -25,7 +27,7 @@ private:
 	SDL_Renderer* renderer;
 	TTF_Font* font;
 	SDL_Texture* textTexture;
-	SDL_Texture* prepareText(std::string& text, SDL_Color& color);
+	StringSDL* textStringSDL;
 public:
 	LabelSDL(std::string text, std::string fontname, int size, SDL_Color color, SDL_Renderer* renderer);
 	virtual ~LabelSDL();

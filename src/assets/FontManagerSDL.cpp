@@ -1,8 +1,8 @@
 //==============================================================================
 // File       : FontManagerSDL.cpp
 // Author     : riyufuchi
-// Created on : Mar 8, 2025
-// Last edit  : Mar 8, 2025
+// Created on : Mar 08, 2025
+// Last edit  : Dec 02, 2025
 // Copyright  : Copyright (c) 2025, riyufuchi
 // Description: ConsoleArt
 //==============================================================================
@@ -31,7 +31,7 @@ TTF_Font* FontManagerSDL::getFont(const std::string& fontName, int size)
 	TTF_Font *font = TTF_OpenFont(fontName.c_str(), size);
 	if (!font)
 	{
-		SDL_Log("Failed to load font %s: %s", fontName.c_str(), TTF_GetError());
+		SDL_Log("Failed to load font %s: %s", fontName.c_str(), SDL_GetError());
 		return nullptr;
 	}
 

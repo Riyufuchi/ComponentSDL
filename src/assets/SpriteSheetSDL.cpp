@@ -2,7 +2,7 @@
 // File       : SpriteSheetSDL.cpp
 // Author     : riyufuchi
 // Created on : Feb 22, 2025
-// Last edit  : Nov 17, 2025
+// Last edit  : Dec 02, 2025
 // Copyright  : Copyright (c) 2025, riyufuchi
 // Description: ConsoleArt
 //==============================================================================
@@ -25,7 +25,7 @@ SpriteSheetSDL::SpriteSheetSDL(const char* path, SDL_Renderer* renderer) : ready
 	spriteSheet = IMG_Load(path);
 	if (!spriteSheet)
 	{
-		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to load image: %s", IMG_GetError());
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to load image: %s", SDL_GetError());
 		ready = false;
 		return;
 	}
@@ -51,12 +51,12 @@ SpriteSheetSDL::SpriteSheetSDL(unsigned int len, unsigned char* imgdata, SDL_Ren
 		return;
 	}
 
-	SDL_RWops* rw = SDL_RWFromConstMem(imgdata, len);
+	SDL_IOStream* io = SDL_IOFromConstMem(imgdata, len);
 
-	spriteSheet = IMG_Load_RW(rw, 1);
+	spriteSheet = IMG_Load_IO(io, 1);
 	if (!spriteSheet)
 	{
-		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to load image: %s", IMG_GetError());
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to load image: %s", SDL_GetError());
 		ready = false;
 		return;
 	}
@@ -76,7 +76,7 @@ SpriteSheetSDL::~SpriteSheetSDL()
 	if (textureSheet)
 		SDL_DestroyTexture(textureSheet);
 	if (spriteSheet)
-		SDL_FreeSurface(spriteSheet);
+		SDL_DestroySurface(spriteSheet);
 }
 
 SDL_Texture* SpriteSheetSDL::getCroppedTexture(int x, int y, int width, int height)
@@ -93,48 +93,64 @@ SDL_Texture* SpriteSheetSDL::getCroppedTexture(int x, int y, int width, int heig
 		return nullptr;
 	}
 
-	// Convert surface only if necessary
-	sourceSurface = spriteSheet;
-	if (spriteSheet->format->format != SDL_PIXELFORMAT_RGBA32)
+	// Convert format if needed
+	if (sourceSurface->format != SDL_PIXELFORMAT_RGBA32)
 	{
-		sourceSurface = SDL_ConvertSurfaceFormat(spriteSheet,
-				SDL_PIXELFORMAT_RGBA32, 0);
-		if (!sourceSurface) {
-			SDL_Log("ERROR: Failed to convert surface format: %s",
-					SDL_GetError());
+		SDL_Surface* converted = SDL_ConvertSurface(spriteSheet, SDL_PIXELFORMAT_RGBA32);
+		if (!converted)
+		{
+			SDL_Log("ERROR: Failed to convert surface: %s", SDL_GetError());
 			return nullptr;
 		}
+		sourceSurface = converted;
 	}
 
-	// Create the cropped surface
-	SDL_Surface* croppedSurface = SDL_CreateRGBSurfaceWithFormat(0, width, height, 32, SDL_PIXELFORMAT_RGBA32);
+	// Allocate pixel buffer for cropped surface (SDL3 needs this!)
+	int bytes_per_pixel = SDL_BYTESPERPIXEL(SDL_PIXELFORMAT_RGBA32);
+	int pitch = width * bytes_per_pixel;
+
+	void* pixels = SDL_malloc(height * pitch);
+	if (!pixels)
+	{
+		SDL_Log("ERROR: Out of memory");
+		if (sourceSurface != spriteSheet)
+			SDL_DestroySurface(sourceSurface);
+		return nullptr;
+	}
+
+	// Create surface wrapping this pixel buffer
+	SDL_Surface* croppedSurface = SDL_CreateSurfaceFrom(width, height, SDL_PIXELFORMAT_RGBA32, pixels, pitch);
+
 	if (!croppedSurface)
 	{
-		SDL_Log("ERROR: Failed to create cropped surface: %s", SDL_GetError());
+		SDL_free(pixels);
 		if (sourceSurface != spriteSheet)
-			SDL_FreeSurface(sourceSurface);
+			SDL_DestroySurface(sourceSurface);
 		return nullptr;
 	}
 
+	// Now blit the desired region
 	SDL_Rect srcRect = { x, y, width, height };
-	SDL_BlitSurface(sourceSurface, &srcRect, croppedSurface, nullptr);
+	SDL_Rect dstRect = { 0, 0, width, height };
 
-	// Convert cropped surface to texture
-	SDL_Texture* croppedTexture = SDL_CreateTextureFromSurface(renderer, croppedSurface);
+	if (SDL_BlitSurface(sourceSurface, &srcRect, croppedSurface, &dstRect))
+	{
+		SDL_Log("ERROR: Blit failed: %s", SDL_GetError());
+		SDL_DestroySurface(croppedSurface);
+		if (sourceSurface != spriteSheet)
+			SDL_DestroySurface(sourceSurface);
+		return nullptr;
+	}
 
-	// Free only if we created a new surface for conversion
-	if (sourceSurface != spriteSheet)
-		SDL_FreeSurface(sourceSurface);
-
-	SDL_FreeSurface(croppedSurface);
-
-	if (!croppedTexture)
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, croppedSurface);
+	if (!texture)
 	{
 		SDL_Log("ERROR: Failed to create texture: %s", SDL_GetError());
+		SDL_DestroySurface(croppedSurface);
 		return nullptr;
 	}
 
-	return croppedTexture;
+	return texture;
 }
 
 SDL_Texture* SpriteSheetSDL::getTexture(const std::string& textureName)

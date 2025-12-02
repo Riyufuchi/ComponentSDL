@@ -2,14 +2,12 @@
 // File       : ContentPanelSDL.cpp
 // Author     : riyufuchi
 // Created on : Feb 23, 2025
-// Last edit  : Mar 24, 2025
+// Last edit  : Dec 02, 2025
 // Copyright  : Copyright (c) 2025, riyufuchi
 // Description: ConsoleArt
 //==============================================================================
 
 #include "../inc/ContentPanelSDL.h"
-
-#include <SDL2/SDL_gesture.h>
 
 namespace sdl
 {

@@ -2,7 +2,7 @@
 // File       : Button.h
 // Author     : riyufuchi
 // Created on : Feb 18, 2025
-// Last edit  : Feb 18, 2025
+// Last edit  : Dec 02, 2025
 // Copyright  : Copyright (c) 2025, riyufuchi
 // Description: ConsoleArt
 //==============================================================================
@@ -10,7 +10,7 @@
 #ifndef CONSOLEART_GUI_UTILS_BUTTON_H_
 #define CONSOLEART_GUI_UTILS_BUTTON_H_
 
-#include <SDL2/SDL.h>
+#include "SDL3/SDL.h"
 
 #include "ComponentSDL.h"
 

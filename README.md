@@ -1,6 +1,7 @@
 # ComponentSDL
 
 - [About](#about)
+- [Used libraries](#used-libraries)
 - [Compilation](#compilation)
 - [Donate](#donate)
 
@@ -8,32 +9,25 @@
 
 Tools to make easy and simple GUI for SDL2 in C++.
 
+## Used libraries
+
+| Name | Used for | Included in this repository |
+| :------: | :----------: | :---: |
+| [SDL3](https://www.libsdl.org/) | GUI | ✅ |
+| [SDL3_image](https://www.libsdl.org/) | Images | ✅ |
+| [SDL3_ttf](https://www.libsdl.org/) | Fonts | ✅ |
+
 ## Compilation
 
-### Using makefile
+This wrapper library will compile for 64-bit Linux and Windows out of the box.
+
+### CMake
 
    ```bash
    git clone https://github.com/Riyufuchi/ComponentSDL.git
    cd ComponentSDL
-   make
-   ```
-
-### Using CMake
-
-   ```bash
-   git clone https://github.com/Riyufuchi/ComponentSDL.git
-   cd ComponentSDL
-   
-   # On Linux and MacOS
+   # Run CMake
    cmake -B build -S .
-   
-   # On Windows
-   cmake -B build -S . \
-    -DSDL2_DIR="C:/path/to/SDL2/cmake" \
-    -DSDL2_image_DIR="C:/path/to/SDL2_image/cmake" \
-    -DSDL2_ttf_DIR="C:/path/to/SDL2_ttf/cmake"
-    
-   # Then build the lib
    cmake --build build
    ```
    
