@@ -2,7 +2,7 @@
 // File       : StringSDL.cpp
 // Author     : riyufuchi
 // Created on : Feb 25, 2025
-// Last edit  : Dec 02, 2025
+// Last edit  : Dec 03, 2025
 // Copyright  : Copyright (c) 2025, riyufuchi
 // Description: ConsoleArt
 //==============================================================================
@@ -12,7 +12,7 @@
 namespace sdl
 {
 LabelSDL::LabelSDL(std::string text, const std::string& fontname, int size, SDL_Color color, SDL_Renderer* renderer) : ComponentSDL(0, 0, 0, 0, color),
-	renderer(renderer), textTexture(nullptr), size(size)
+	renderer(renderer), textTexture(nullptr), textStringSDL(nullptr), size(size)
 {
 	this->fontname = fontname;
 	setText(text, color); // Initialize text texture
@@ -21,7 +21,10 @@ LabelSDL::LabelSDL(std::string text, const std::string& fontname, int size, SDL_
 LabelSDL::~LabelSDL()
 {
 	if (textStringSDL)
+	{
 		delete textStringSDL;
+		textStringSDL = nullptr;
+	}
 }
 
 void LabelSDL::draw(SDL_Renderer *renderer)
