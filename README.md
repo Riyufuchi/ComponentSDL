@@ -28,7 +28,7 @@ This wrapper library will compile for 64-bit Linux and Windows out of the box.
    cd ComponentSDL
    # Run CMake
    cmake -B build -S .
-   cmake --build build
+   cmake --build build --config Release
    ```
    
 ## Donate
