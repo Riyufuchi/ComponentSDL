@@ -21,6 +21,13 @@ Tools to make easy and simple GUI for SDL2 in C++.
 
 This wrapper library will compile for 64-bit Linux and Windows out of the box.
 
+### Compiled & Tested on
+
+| OS | Compiler |
+| :------: | :----------: |
+| Ubuntu | g++ 15.2.0 |
+| Windows 10 | MSVC 19.50.35719.0 |
+
 ### CMake
 
    ```bash
