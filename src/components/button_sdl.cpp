@@ -2,12 +2,12 @@
 // File       : Button.cpp
 // Author     : riyufuchi
 // Created on : Feb 18, 2025
-// Last edit  : Feb 18, 2025
+// Last edit  : Dec 23, 2025
 // Copyright  : Copyright (c) 2025, riyufuchi
-// Description: ConsoleArt
+// Description: consoleart
 //==============================================================================
 
-#include "../inc/ButtonSDL.h"
+#include "../component_sdl_lib/components/button_sdl.h"
 
 namespace sdl
 {
@@ -28,4 +28,4 @@ void ButtonSDL::draw(SDL_Renderer* renderer)
 		mouseOver ? hoverColor.b : baseColor.b, 255);
 	SDL_RenderFillRect(renderer, &rect);
 }
-} /* namespace ConsoleArt */
+} /* namespace consoleart */

@@ -2,9 +2,9 @@
 // File       : Button.h
 // Author     : riyufuchi
 // Created on : Feb 18, 2025
-// Last edit  : Dec 02, 2025
+// Last edit  : Dec 23, 2025
 // Copyright  : Copyright (c) 2025, riyufuchi
-// Description: ConsoleArt
+// Description: consoleart
 //==============================================================================
 
 #ifndef CONSOLEART_GUI_UTILS_IMAGE_BUTTON_H_
@@ -13,7 +13,7 @@
 #include <utility>
 
 #include "SDL2/SDL.h"
-#include "ComponentSDL.h"
+#include "../base/component_sdl.h"
 
 namespace sdl
 {
@@ -30,5 +30,5 @@ public:
 	~ImageButtonSDL();
 	virtual void draw(SDL_Renderer* renderer) override;
 };
-} /* namespace ConsoleArt */
+} /* namespace consoleart */
 #endif /* CONSOLEART_GUI_UTILS_BUTTON_H_ */

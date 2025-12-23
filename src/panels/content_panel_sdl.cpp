@@ -2,12 +2,12 @@
 // File       : ContentPanelSDL.cpp
 // Author     : riyufuchi
 // Created on : Feb 23, 2025
-// Last edit  : Dec 02, 2025
+// Last edit  : Dec 23, 2025
 // Copyright  : Copyright (c) 2025, riyufuchi
-// Description: ConsoleArt
+// Description: consoleart
 //==============================================================================
 
-#include "../inc/ContentPanelSDL.h"
+#include "../component_sdl_lib/panels/content_panel_sdl.h"
 
 namespace sdl
 {
@@ -110,4 +110,4 @@ void ContentPanelSDL::addComponent(int y, ComponentSDL* component)
 	rect.h = std::max(rect.h, component->getY() + component->getHeight());
 }
 
-} /* namespace ConsoleArt */
+} /* namespace consoleart */

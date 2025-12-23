@@ -2,12 +2,12 @@
 // File       : StringSDL.cpp
 // Author     : riyufuchi
 // Created on : Feb 25, 2025
-// Last edit  : Dec 03, 2025
+// Last edit  : Dec 23, 2025
 // Copyright  : Copyright (c) 2025, riyufuchi
-// Description: ConsoleArt
+// Description: consoleart
 //==============================================================================
 
-#include "../inc/LabelSDL.h"
+#include "../component_sdl_lib/components/label_sdl.h"
 
 namespace sdl
 {
@@ -54,4 +54,4 @@ void LabelSDL::setText(std::string text, SDL_Color color)
 	SDL_QueryTexture(t, nullptr, nullptr, &rect.w, &rect.h);
 }
 
-} /* namespace ConsoleArt */
+} /* namespace consoleart */

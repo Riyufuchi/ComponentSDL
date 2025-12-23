@@ -10,6 +10,9 @@ bin
 .clangd
 .clang-format
 
+# QtCreator
+*.user
+
 # Prerequisites
 *.d
 

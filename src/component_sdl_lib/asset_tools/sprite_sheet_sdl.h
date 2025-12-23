@@ -2,7 +2,7 @@
 // File       : SpriteSheetSDL.h
 // Author     : riyufuchi
 // Created on : Feb 18, 2025
-// Last edit  : Dec 02, 2025
+// Last edit  : Dec 23, 2025
 // Copyright  : Copyright (c) 2025, riyufuchi
 // Description:
 //==============================================================================
@@ -26,6 +26,7 @@ private:
 	SDL_Renderer* renderer;
 	SDL_Texture* textureSheet;
 	SDL_Surface* sourceSurface;
+	SpriteSheetSDL(SDL_Renderer* renderer);
 	std::unordered_map<std::string, SDL_Texture*> textureCache;
 public:
 	SpriteSheetSDL(const char* path, SDL_Renderer* renderer);

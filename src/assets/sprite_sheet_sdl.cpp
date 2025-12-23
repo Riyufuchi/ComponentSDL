@@ -2,20 +2,23 @@
 // File       : SpriteSheetSDL.cpp
 // Author     : riyufuchi
 // Created on : Feb 22, 2025
-// Last edit  : Dec 02, 2025
+// Last edit  : Dec 23, 2025
 // Copyright  : Copyright (c) 2025, riyufuchi
-// Description: ConsoleArt
+// Description: consoleart
 //==============================================================================
 
-#include "../inc/SpriteSheetSDL.h"
+#include "../component_sdl_lib/asset_tools/sprite_sheet_sdl.h"
 
 #define STB_IMAGE_IMPLEMENTATION
-#include "../inc/external/stb_image.h"
+#define STBI_INLINE
+#include "../component_sdl_lib/external/stb_image.h"
 
 
 namespace sdl
 {
-SpriteSheetSDL::SpriteSheetSDL(const char* path, SDL_Renderer* renderer) : renderer(renderer), ready(true), spriteSheet(nullptr), textureSheet(nullptr), sourceSurface(nullptr)
+SpriteSheetSDL::SpriteSheetSDL(SDL_Renderer* renderer) : ready(true), spriteSheet(nullptr), renderer(renderer), textureSheet(nullptr), sourceSurface(nullptr)
+{}
+SpriteSheetSDL::SpriteSheetSDL(const char* path, SDL_Renderer* renderer) : SpriteSheetSDL(renderer)
 {
 	if (!renderer)
 	{
@@ -78,7 +81,7 @@ SpriteSheetSDL::SpriteSheetSDL(const char* path, SDL_Renderer* renderer) : rende
 	}
 }
 
-SpriteSheetSDL::SpriteSheetSDL(unsigned int len, unsigned char* imgdata, SDL_Renderer* renderer) : renderer(renderer), ready(true), spriteSheet(nullptr), textureSheet(nullptr), sourceSurface(nullptr)
+SpriteSheetSDL::SpriteSheetSDL(unsigned int len, unsigned char* imgdata, SDL_Renderer* renderer) : SpriteSheetSDL(renderer)
 {
 	if (!renderer)
 	{

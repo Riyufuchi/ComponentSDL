@@ -1,17 +1,17 @@
 //==============================================================================
 // File       : StringButtonSDL.h
 // Author     : riyufuchi
-// Created on : Mar 4, 2025
-// Last edit  : May 24, 2025
+// Created on : Mar 04, 2025
+// Last edit  : Dec 23, 2025
 // Copyright  : Copyright (c) 2025, riyufuchi
-// Description: ConsoleArt
+// Description: consoleart
 //==============================================================================
 
 #ifndef SDL_COMPONENTS_STRINGBUTTONSDL_H_
 #define SDL_COMPONENTS_STRINGBUTTONSDL_H_
 
-#include "ComponentSDL.h"
-#include "TextSDL.h"
+#include "../base/component_sdl.h"
+#include "../asset_tools/text_sdl.h"
 
 namespace sdl
 {

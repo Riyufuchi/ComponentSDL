@@ -1,8 +1,8 @@
 //==============================================================================
 // File       : TextSDL.h
 // Author     : riyufuchi
-// Created on : Dec 2, 2025
-// Last edit  : Dec 2, 2025
+// Created on : Dec 02, 2025
+// Last edit  : Dec 23, 2025
 // Copyright  : Copyright (c) 2025, riyufuchi
 // Description: ComponentSDL
 //==============================================================================
@@ -19,7 +19,7 @@
 
 
 #include "SDL2/SDL.h"
-#include "external/stb_truetype.h"
+#include "../external/stb_truetype.h"
 
 namespace sdl
 {

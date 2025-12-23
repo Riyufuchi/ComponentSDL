@@ -2,7 +2,7 @@
 // File       : ContentPanelSDL.h
 // Author     : riyufuchi
 // Created on : Feb 23, 2025
-// Last edit  : Mar 24, 2025
+// Last edit  : Dec 23, 2025
 // Copyright  : Copyright (c) 2025, riyufuchi
 // Description: This class assumes ownership of the components
 //==============================================================================
@@ -14,11 +14,11 @@
 #include <utility>
 #include <unordered_map>
 
-#include "ComponentSDL.h"
+#include "../base/component_sdl.h"
 
 namespace sdl
 {
-class ContentPanelSDL: public ComponentSDL
+class ContentPanelSDL : public ComponentSDL
 {
 private:
 	std::unordered_map<int, std::vector<ComponentSDL*>> componentsAtY;
@@ -34,5 +34,5 @@ public:
 	void checkHoverOverContent(int& x, int& y);
 	void clear();
 };
-} /* namespace ConsoleArt */
+} /* namespace consoleart */
 #endif /* CONSOLEART_SDL_COMPONENTS_CONTENTPANELSDL_H_ */

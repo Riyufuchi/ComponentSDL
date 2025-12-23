@@ -2,12 +2,12 @@
 // File       : StringButtonSDL.cpp
 // Author     : riyufuchi
 // Created on : Mar 04, 2025
-// Last edit  : Dec 02, 2025
+// Last edit  : Dec 23, 2025
 // Copyright  : Copyright (c) 2025, riyufuchi
-// Description: ConsoleArt
+// Description: consoleart
 //==============================================================================
 
-#include "../inc/StringButtonSDL.h"
+#include "../component_sdl_lib/components/string_button_sdl.h"
 
 namespace sdl
 {

@@ -2,12 +2,12 @@
 // File       : StateSDL.cpp
 // Author     : riyufuchi
 // Created on : Feb 26, 2025
-// Last edit  : Feb 26, 2025
+// Last edit  : Dec 23, 2025
 // Copyright  : Copyright (c) 2025, riyufuchi
-// Description: ConsoleArt
+// Description: consoleart
 //==============================================================================
 
-#include "../inc/StateSDL.h"
+#include "../component_sdl_lib/base/state_sdl.h"
 
 namespace sdl
 {
@@ -22,4 +22,4 @@ void StateSDL::exitApplication()
 {
 	winInfo.keepRunning = false;
 }
-} /* namespace ConsoleArt */
+} /* namespace consoleart */

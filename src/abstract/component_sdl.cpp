@@ -2,12 +2,12 @@
 // File       : ComponentSDL.cpp
 // Author     : riyufuchi
 // Created on : Feb 21, 2025
-// Last edit  : Dec 02, 2025
+// Last edit  : Dec 23, 2025
 // Copyright  : Copyright (c) 2025, riyufuchi
-// Description: ConsoleArt
+// Description: consoleart
 //==============================================================================
 
-#include "../inc/ComponentSDL.h"
+#include "../component_sdl_lib/base/component_sdl.h"
 
 namespace sdl
 {
@@ -102,4 +102,4 @@ bool ComponentSDL::isMouseOver() const
 	return mouseOver;
 }
 
-} /* namespace ConsoleArt */
+} /* namespace consoleart */

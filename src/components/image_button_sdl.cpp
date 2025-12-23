@@ -2,12 +2,12 @@
 // File       : Button.cpp
 // Author     : riyufuchi
 // Created on : Feb 18, 2025
-// Last edit  : Dec 02, 2025
+// Last edit  : Dec 23, 2025
 // Copyright  : Copyright (c) 2025, riyufuchi
-// Description: ConsoleArt
+// Description: consoleart
 //==============================================================================
 
-#include "../inc/ImageButtonSDL.h"
+#include "../component_sdl_lib/components/image_button_sdl.h"
 
 namespace sdl
 {
@@ -30,4 +30,4 @@ void ImageButtonSDL::draw(SDL_Renderer* renderer)
 {
 	SDL_RenderCopy(renderer, (mouseOver ? textureHover : texture), nullptr, &rect);
 }
-} /* namespace ConsoleArt */
+} /* namespace consoleart */

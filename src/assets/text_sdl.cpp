@@ -2,15 +2,15 @@
 // File       : TextSDL.cpp
 // Author     : riyufuchi
 // Created on : Dec 02, 2025
-// Last edit  : Dec 03, 2025
+// Last edit  : Dec 23, 2025
 // Copyright  : Copyright (c) 2025, riyufuchi
 // Description: ComponentSDL
 //==============================================================================
 
-#include "../inc/TextSDL.h"
+#include "../component_sdl_lib/asset_tools/text_sdl.h"
 
 #define STB_TRUETYPE_IMPLEMENTATION
-#include "../inc/external/stb_truetype.h"
+#include "../component_sdl_lib/external/stb_truetype.h"
 
 namespace sdl
 {

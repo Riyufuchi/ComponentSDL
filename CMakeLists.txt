@@ -8,10 +8,10 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 #
-# Default build type
+# Other settings
 #
-if(NOT CMAKE_BUILD_TYPE)
-	set(CMAKE_BUILD_TYPE Release CACHE STRING "" FORCE)
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+	add_compile_definitions(NOMINMAX)
 endif()
 
 #
@@ -20,7 +20,6 @@ endif()
 if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
 	add_compile_options(-Wall -Wextra -pedantic)
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-	add_compile_definitions(NOMINMAX)
 	add_compile_options(/W4)
 endif()
 
@@ -29,8 +28,16 @@ endif()
 #
 if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
 	set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+	set(CMAKE_C_FLAGS_RELEASE "-O3")
+	#
+	set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g -DDEBUG")
+	set(CMAKE_C_FLAGS_DEBUG "-O0 -g -DDEBUG")
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 	set(CMAKE_CXX_FLAGS_RELEASE "/O2")
+	set(CMAKE_C_FLAGS_RELEASE "/O2")
+	#
+	set(CMAKE_CXX_FLAGS_DEBUG "/Od /Zi /DDEBUG")
+	set(CMAKE_C_FLAGS_DEBUG "/Od /Zi /DDEBUG")
 endif()
 
 #
@@ -63,6 +70,6 @@ file(GLOB_RECURSE APP_SOURCES
 add_library(ComponentSDL STATIC ${APP_SOURCES})
 
 # Link everything
-target_link_libraries(ComponentSDL PRIVATE
-	SDL2
-)
+target_include_directories(ComponentSDL PRIVATE ${SDL_LIB_DIR})
+
+target_link_libraries(ComponentSDL PRIVATE SDL2)

@@ -2,15 +2,15 @@
 // File       : ComponentSDL.h
 // Author     : riyufuchi
 // Created on : Feb 21, 2025
-// Last edit  : Dec 02, 2025
+// Last edit  : Dec 23, 2025
 // Copyright  : Copyright (c) 2025, riyufuchi
-// Description: ConsoleArt
+// Description: consoleart
 //==============================================================================
 
 #ifndef CONSOLEART_GUI_COMPONENTSDL_H_
 #define CONSOLEART_GUI_COMPONENTSDL_H_
 
-#include "SDL2/SDL.h"
+#include <SDL2/SDL.h>
 
 #include <functional>
 
@@ -48,6 +48,6 @@ public:
 	int getHeight() const;
 	bool isMouseOver() const;
 };
-} /* namespace ConsoleArt */
+} /* namespace consoleart */
 
 #endif /* CONSOLEART_GUI_COMPONENTSDL_H_ */

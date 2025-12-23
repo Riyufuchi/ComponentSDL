@@ -1,8 +1,3 @@
 # Ignore 3rd party libs that are included in the repo
-libs/* linguist-vendored
-<<<<<<< HEAD
-src/external/* linguist-vendored
-=======
-libs/ linguist-vendored
->>>>>>> branch 'main' of https://github.com/Riyufuchi/ComponentSDL.git
+src/component_sdl_lib/external/* linguist-vendored
 

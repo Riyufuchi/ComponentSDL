@@ -33,8 +33,12 @@ This wrapper library will compile for 64-bit Linux and Windows out of the box.
    ```bash
    git clone https://github.com/Riyufuchi/ComponentSDL.git
    cd ComponentSDL
-   # Run CMake
-   cmake -B build -S .
+   # CMake for Linux, macOS, MinGW, Ninja (single-config)
+   cmake -DCMAKE_BUILD_TYPE=Release -S . -B build
+   cmake --build build
+   
+   # CMake for Visual Studio, Xcode, Ninja Multi-Config
+   cmake -S . -B build
    cmake --build build --config Release
    ```
    
