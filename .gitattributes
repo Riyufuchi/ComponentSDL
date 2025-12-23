@@ -1,3 +1,4 @@
 # Ignore 3rd party libs that are included in the repo
 src/component_sdl_lib/external/* linguist-vendored
+libs/SDL/SDL2/* linguist-vendored
 
